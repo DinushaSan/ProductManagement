@@ -1,9 +1,6 @@
 
 pipeline {
     agent none
-     triggers {
-        githubPush() // For GitHub
-    }
    stages {     
     stage('Maven Install') {
       agent {         
