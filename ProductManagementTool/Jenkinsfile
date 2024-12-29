@@ -1,0 +1,33 @@
+pipeline {
+    agent any
+    environment {
+        DOCKER_IMAGE = 'dinushasan/product-management-tool'
+        DOCKER_CREDENTIALS = 'e699ac6c40dc' // Update with your Jenkins credential ID
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'docker-integration', url: 'https://github.com/DinushaSan/ProductManagement.git' // Update with your Git repository URL
+            }
+        }
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    sh 'docker build -t $DOCKER_IMAGE .'
+                }
+            }
+        }
+        stage('Push to Docker Hub') {
+            steps {
+                script {
+                    docker.withRegistry('', DOCKER_CREDENTIALS) {
+                        sh 'docker push $DOCKER_IMAGE'
+                    }
+                }
+            }
+        }
+    }
+    triggers {
+        pollSCM('H/5 * * * *') // Poll Git repository every 5 minutes
+    }
+}
