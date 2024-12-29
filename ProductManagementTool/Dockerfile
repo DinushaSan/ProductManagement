@@ -3,7 +3,7 @@ FROM openjdk:17
 
 
 # Copy the built JAR file to the container
-COPY target/product-management-tool.jar product-management-tool.jar
+ADD target/product-management-tool.jar product-management-tool.jar
 
 # Expose the application port (adjust based on your app)
 EXPOSE 8091
