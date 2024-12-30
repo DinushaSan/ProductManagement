@@ -1,5 +1,9 @@
 pipeline {
     agent any
+    
+    tools {
+        maven 'Maven 3.9.9' // Use the configured Maven tool
+    }
 
     triggers {
         pollSCM '* * * * *' // Polls for changes in SCM every minute
