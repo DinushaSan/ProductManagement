@@ -7,6 +7,11 @@ pipeline {
         }
     }
     stages {
+        stage('Debug Docker Access') {
+            steps {
+                sh 'whoami && groups && docker ps'
+            }
+        }
         stage('Maven Install') {
             steps {
                 sh 'mvn clean install'
