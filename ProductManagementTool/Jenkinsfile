@@ -1,11 +1,8 @@
 #!groovy
 pipeline {
-agent {
-    label 'docker' 
-  }
     agent {
         docker {
-			
+			label 'docker'
             image 'maven:4.0.0'
             args '--privileged'
         }
