@@ -1,11 +1,37 @@
 pipeline {
-    agent { docker { image 'maven:3.9.9-eclipse-temurin-21-alpine' } }
-    stages {
-        stage('build') {
-            steps {
-                sh 'mvn --version'
+    agent any
+    tools {
+        maven 'maven_3.9.9'
+    }
+    stages{
+        stage("Build Maven"){
+            steps{
+                checkout scmGit(branches: [[name: '*/docker-integration']], extensions: [], userRemoteConfigs: [[credentialsId: 'DinushaSan', url: 'https://github.com/DinushaSan/ProductManagement.git']])
+                dir('ProductManagementTool') {
+                    sh "mvn install"
+                }
             }
         }
+       stage ("Build Docker image") {
+            steps{
+                 dir('ProductManagementTool') {
+                     script {
+                         sh "docker build -t dinushasan/product-management-tool ."
+                     }
+                 }
+            }
+        }
+       stage ("Push image to hub") {
+           steps {
+           dir('ProductManagementTool') {
+              script {
+                         sh "docker push dinushasan/product-management-tool ."
+             }  
+           }
+           }
+       }
+        
+        
     }
 }
 
