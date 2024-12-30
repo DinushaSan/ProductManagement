@@ -2,17 +2,11 @@
 pipeline {
     agent {
         docker {
-			label 'docker'
             image 'maven:4.0.0'
             args '--privileged'
         }
     }
     stages {
-        stage('Debug Docker Access') {
-            steps {
-                sh 'whoami && groups && docker ps'
-            }
-        }
         stage('Maven Install') {
             steps {
                 sh 'mvn clean install'
@@ -20,3 +14,4 @@ pipeline {
         }
     }
 }
+
